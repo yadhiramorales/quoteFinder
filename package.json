@@ -16,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/yadhiramorales/quoteFinder/issues"
   },
-  "homepage": "https://github.com/yadhiramorales/quoteFinder#readme"
+  "homepage": "https://github.com/yadhiramorales/quoteFinder#readme",
+  "dependencies": {
+    "express": "^5.1.0",
+    "mysql2": "^3.15.3"
+  }
 }
