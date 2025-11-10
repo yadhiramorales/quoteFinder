@@ -1,12 +1,19 @@
-dialog#authorModal {
+button {
+  background-color: #65e5ff;
+  color: white;                               
+  padding: 0.5rem 0.9rem;        
   border: none;
-  border-radius: 10px;
-  padding: 2rem;
-  max-width: 600px;
-  width: 90%;
-  margin: auto;
-  box-shadow: 0 0 20px rgba(0,0,0,0.4);
-  background: #fff;
+  border-radius: 8px;           
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3); 
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  line-break: strict;
+}
+
+button:hover {
+    background-color: #40dfff;     
+    transform: scale(1.04); 
+    opacity: 0.95;      
 }
 
 #authorInfo {

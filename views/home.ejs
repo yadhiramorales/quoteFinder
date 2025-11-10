@@ -4,17 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script> 
+    <link href="/css/styles.css" rel="stylesheet">   
     <title>Famous Quotes</title>
 </head>
 <body class="text-center">
     
-    <h1 class="bg-black text-white p-4 m-0">Famous Quotes</h1>
+    <h1 class="bg-primary text-white p-4 m-0">Famous Quotes</h1>
     <%- include("partials/navbar.ejs") %>
     <br>
     <form id="searchByKeywordForm" action="/searchByKeyword" method="GET">
       <label>Keyword: <input type="text" name="keyword" id="keyword"></label>
-      <button class="btn btn-primary">Search</button>
+      <button>Search</button>
       <br>
       <small id="keywordError" class="text-danger"></small>
     </form>
@@ -28,7 +29,7 @@
          <option value="<%=row.authorId %>"><%=row.firstName %> <%=row.lastName %></option>
         <% } %>
        </select>
-       <button class="btn btn-primary">Search</button>
+       <button class="btnClass">Search</button>
 
     </form>
     <br>
@@ -40,7 +41,7 @@
         <option value="<%= row.categoryName %>"><%= row.categoryName %></option>
        <% } %>
       </select>
-      <button class="btn btn-primary">Search</button>
+      <button >Search</button>
     </form>
     <br>
 
@@ -53,7 +54,7 @@
         Max likes:
         <input type="number" name="max" min="0" step="1" placeholder="1000">
       </label>
-      <button class="btn btn-primary">Search</button>
+      <button >Search</button>
   </form>
 
     <script src="/js/home.js"></script>
