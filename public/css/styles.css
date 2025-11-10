@@ -1,0 +1,46 @@
+dialog#authorModal {
+  border: none;
+  border-radius: 10px;
+  padding: 2rem;
+  max-width: 600px;
+  width: 90%;
+  margin: auto;
+  box-shadow: 0 0 20px rgba(0,0,0,0.4);
+  background: #fff;
+}
+
+#authorInfo {
+  text-align: center;
+}
+
+#authorImage {
+  width: 250px;
+  border-radius: 8px;
+  margin: 1rem 0;
+}
+
+#authorName {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+#authorInfo p {
+  margin: 0.3rem 0;
+  font-size: 1rem;
+  color: #333;
+}
+
+#closeModal {
+  display: block;
+  margin: 1rem auto 0;
+  padding: 0.5rem 1.2rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#closeModal:hover {
+  background-color: #0056b3;
+}

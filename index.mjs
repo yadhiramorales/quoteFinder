@@ -21,44 +21,90 @@ const pool = mysql.createPool({
 
 //routes
 app.get('/', async (req, res) => {
-
    let sql = `SELECT authorId, firstName, lastName
-               FROM authors`;
+              FROM authors
+              ORDER BY lastName`;
 
-    const [authorRows] = await pool.query(sql);
-    console.log(authorRows);
-   res.render('home.ejs', {authorRows});
+    const sqlCategories = `SELECT DISTINCT category AS categoryName
+                            FROM quotes
+                            WHERE category IS NOT NULL AND category <> ''
+                            ORDER BY categoryName`;
+
+    const [categories] = await pool.query(sqlCategories);
+
+   const [rows] = await pool.query(sql);  
+   console.log(rows);        
+   res.render('home.ejs', {rows, categories})
 });
 
-app.get('/searchByKeyword', async (req, res) => {
-    console.log(req);
-    let keyword = req.query.keyword; //server gets input from browser
-    // let sql = `SELECT firstName, lastName, quote
-    //            FROM authors
-    //            NATURAL JOIN quotes
-    //            WHERE quote LIKE '%${keyword}%'`;    //should not have direct input as 
-    //                                                //part of the query because we cannot 
-    // 
-    let sql = `SELECT authorId, firstName, lastName, quote
-               FROM authors
-               NATURAL JOIN quotes
-               WHERE quote LIKE ?`;    
-    let sqlParams = [`%${keyword}%`];   //adding this step means that the above is compiled, 
-                                        // and then none of what you typed as input can be 
-                                        // interpreted as code after.
+app.get('/searchByAuthor', async (req, res) => {
+   let authorId = req.query.authorId;
+    const sql = `SELECT a.authorId, a.firstName, a.lastName, q.quote, q.category
+                    FROM quotes q
+                    JOIN authors a ON a.authorId = q.authorId
+                    WHERE a.authorId = ?
+                    ORDER BY q.quoteId`;
+    const [rows] = await pool.query(sql, [authorId]);
+
+    res.render('results.ejs', {rows});
+});
+
+app.get('/searchByKeyword', async(req, res) => {
+   let keyword = req.query.keyword;
+   let sql = `SELECT authorId, firstName, lastName, quote
+              FROM authors
+              NATURAL JOIN quotes
+              WHERE quote LIKE ?`;
+
+    let sqlParams = [`%${keyword}%`];
     const [rows] = await pool.query(sql, sqlParams);
     console.log(rows);
-   res.render('results.ejs', {rows}) //passing query results to ejs file
+   res.render('results.ejs', {rows})
 });
 
+app.get('/searchByCategory', async(req, res) => {
+    let category = req.query.category;
+    const sql = `SELECT a.authorId, a.firstName, a.lastName, q.quote
+                    FROM quotes q
+                    JOIN authors a ON a.authorId = q.authorId
+                    WHERE TRIM(q.category) = ?
+                    ORDER BY a.lastName, a.firstName`;
+
+    const [rows] = await pool.query(sql, [category]);
+    console.log(rows);
+    res.render('results.ejs', {rows})
+});
+
+app.get('/searchByLikes', async (req, res) => {
+  let min = parseInt(req.query.min) || 0;
+  let max = parseInt(req.query.max) || 999999;
+
+  if (min > max){
+    [min, max] = [max, min];
+  }
+
+  const sql = `
+    SELECT a.authorId, a.firstName, a.lastName, q.quote, q.category, q.likes
+    FROM quotes q
+    JOIN authors a ON a.authorId = q.authorId
+    WHERE q.likes BETWEEN ? AND ?
+    ORDER BY q.likes DESC
+  `;
+
+  const [rows] = await pool.query(sql, [min, max]);
+  res.render('results.ejs', { rows });
+});
+
+
+
 //local API to get all info for a specific author
-app.get('/api/authors/:authorId', async (req, res) => { //colon distinguishes a route parameter
-    let authorId = req.params.authorId; //route param must match here
-    let sql =   `SELECT *
-                FROM authors
-                WHERE authorId = ?`;
-    const [rows] = await pool.query(sql, [authorId]);
-   res.send(rows);
+app.get('/api/authors/:authorId', async(req, res) => {
+   let authorId = req.params.authorId;
+   let sql = `SELECT *
+              FROM authors
+              WHERE authorId = ?`;
+  const [rows] = await pool.query(sql, [authorId]);          
+  res.send(rows);
 });
 
 app.get("/dbTest", async(req, res) => {
